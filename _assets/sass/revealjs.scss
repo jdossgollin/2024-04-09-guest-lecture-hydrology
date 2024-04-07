@@ -1,0 +1,233 @@
+// mostly from https://github.com/jimjam-slam/talk-runapp-quarto-2022/tree/main
+// original: (MIT License)
+
+// Theme colors
+// https://brand.rice.edu/university-colors
+$rice-blue: #00205B;
+$rice-gray: #7C7E7F;
+
+// Extended palette
+// https://brand.rice.edu/extended-palette
+$light-blue-gray: #ADC7DC;
+$light-gray: #E0E2E6;
+$bright-blue: #9FDDF9;
+$medium-blue: #4D9AD4;
+$rich-blue: #0A509E;
+$midnight-blue: #13133E;
+$dark-gray: #44474F;
+$dark-blue-gray: #303B61;
+
+// Campus-inspired palette
+// https://brand.rice.edu/campus-inspired-palette
+$warm-yellow: #E9A139;
+$brick-red: #C04829;
+$burgundy: #68132E;
+$shadow-purple: #362E52;
+$leaf-emerald: #005B50;
+$tree-green: #00432C;
+$grass-green: #359245;
+$bright-green: #A5C151;
+
+
+$body-bg: white;
+$body-color: $rice-blue;
+$headings-color: $grass-green !default; // because we're texturing them
+$link-color: $rice-gray;
+
+/*-- scss:rules --*/
+
+.boxcol {
+    background-color: #000000cc;
+    color: white;
+    padding: 30px;
+}
+
+.reveal {
+    section {
+
+        h2,
+        h3 {
+            color: $grass-green;
+            text-transform: uppercase;
+            margin-bottom: 0.5em;
+        }
+
+        h2 {
+            font-size: 52px;
+        }
+
+        h3 {
+            font-size: 44px;
+        }
+
+        h4,
+        h5,
+        h6 {
+            color: $grass-green;
+            font-weight: normal;
+        }
+
+        h4 {
+            font-size: 52px;
+        }
+
+        h5 {
+            font-size: 44px;
+        }
+
+        h6 {
+            font-size: 36px;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+
+            // other headers
+            &.text-brick-red {
+                color: $brick-red
+            }
+
+            &.text-light-gray {
+                color: $light-gray
+            }
+
+            &.text-rice-gray {
+                color: $rice-gray
+            }
+
+            &.text-midnight-blue {
+                color: $midnight-blue
+            }
+
+            &.text-grass-green {
+                color: $grass-green
+            }
+
+            &.text-warm-yellow {
+                color: $warm-yellow
+            }
+
+            &.text-black-white {
+                background: linear-gradient(45deg, #333, #ccc);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+            }
+
+        }
+    }
+
+    // weird that they're inline-block by default?
+    ol,
+    ul {
+        display: block;
+        padding-left: 1em;
+    }
+
+    // override reveal.js progress colours (naughty!)
+    .progress {
+        color: transparent !important;
+
+        span {
+            background: linear-gradient(45deg, red, gold);
+        }
+    }
+
+    .slide-menu-button a {
+        color: #000000aa;
+    }
+}
+
+
+.hl {
+    padding-inline: 1rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    background-color: #99999966;
+
+    &-grass-green {
+        background-color: $grass-green;
+    }
+
+    &-brick-red {
+        background-color: $brick-red;
+    }
+
+    &-rice-blue {
+        background-color: $rice-blue;
+    }
+
+    &-warm-yellow {
+        background-color: $warm-yellow;
+    }
+
+    &-light-gray {
+        background-color: $light-gray;
+    }
+
+    &-rice-blue {
+        background-color: $rice-blue;
+    }
+
+}
+
+.reveal .footer {
+    color: $rice-gray;
+}
+
+.reveal .caption {
+    font-size: 24px;
+    color: $rice-gray;
+}
+
+.reveal .figcaption {
+    font-size: 24px;
+    color: $rice-gray;
+}
+
+.reveal .bigcaption {
+    font-size: 36px;
+    color: $rice-gray;
+}
+
+// TITLE STUFF
+.reveal {
+    .title {
+        color: $light-gray;
+        font-size: 60px;
+        text-align: left;
+        font-weight: bold;
+        font-family: serif;
+        line-height: 1.2;
+        margin-bottom: 1em;
+
+        span {
+            display: inline-block;
+            padding: 0.25em 0.5em;
+        }
+    }
+
+    .author,
+    .date,
+    .institute {
+        color: $light-gray;
+        text-align: left;
+        font-size: 30px;
+        font-family: sans-serif;
+
+        span {
+            display: inline-block;
+            padding: 0.25em 0.5em;
+        }
+    }
+}
+
+/*-- scss:rules --*/
+
+.reveal .slide-number>a[href*='title-slide'] {
+    display: none;
+}

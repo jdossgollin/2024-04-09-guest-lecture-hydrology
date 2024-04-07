@@ -1,0 +1,84 @@
+---
+title: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+date: 2024-04-07
+author: James Doss-Gollin
+institute: "Rice University"
+
+mainfont: "Merriweather"
+sansfont: "Mallory"
+monofont: "JuliaMono"
+format: 
+    revealjs:
+
+        theme: _assets/sass/revealjs.scss
+        
+        # page numbering
+        slide-number: c/t
+        show-slide-number: all
+        hash-type: number
+
+        # page layout and transition
+        center-title-slide: true
+        width: 1280
+        height: 720
+        transition: none
+        toc: false
+        history: false
+        menu:
+            numbers: true
+        scrollable: true
+        preview-links: auto
+        
+        # code, links, and refs
+        link-external-newwindow: true
+        citations-hover: true
+        code-annotations: below
+        
+        # math and code
+        html-math-method: mathjax
+        include-in-header: _assets/html/mathjax-config.html
+        date-format: "ddd., MMM. D"
+
+        footer: "James Doss-Gollin"
+
+        title-slide-attributes:
+            data-background-image: _assets/img/houston/martinez-harvey.JPG
+            data-background-size: "cover"
+            data-background-opacity: "0.3"
+
+        template-partials: 
+            - _assets/html/title-slide.html
+
+# references
+bibliography: _bibliography/library.bib
+csl: _assets/references/american-geophysical-union.csl
+
+# reveal-auto-agenda extension
+filters:
+  - reveal-auto-agenda
+
+auto-agenda:
+  bullets: numbered
+  heading: Today
+---
+
+# Lorem ipsum 
+
+## dolor sit amet
+
+1. consectetur
+1. adipiscing
+1. elit
+
+## sed do eiusmod
+
+::: {.callout-alert}
+## tempor incididunt
+ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+:::
+
+# Duis aute
+
+## irure dolor in reprehenderit
+
+in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.

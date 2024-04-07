@@ -1,0 +1,27 @@
+<section id="$idprefix$title-slide" $for(title-slide-attributes/pairs)$ $it.key$="$it.value$" $endfor$>
+  <div style="text-align: left;">
+    <h1 class="title">
+      $for(title)$
+      <div width="100%"><span class="hl-rice-blue">$title$</span></div>
+      $endfor$
+    </h1>
+
+    <h2 class="author">
+      $for(author)$
+      <span class="hl-brick-red">$author$</span>
+      $endfor$
+    </h2>
+
+    <h2 class="institute">
+      $for(institute)$
+      <span class="hl-brick-red">$institute$</span>
+      $endfor$
+    </h2>
+
+    <h2 class="date">
+      $for(date)$
+      <span class="hl-grass-green">$date$</span>
+      $endfor$
+    </h2>
+  </div>
+</section>
