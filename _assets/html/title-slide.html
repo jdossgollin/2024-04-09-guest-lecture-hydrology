@@ -23,5 +23,11 @@
       <span class="hl-grass-green">$date$</span>
       $endfor$
     </h2>
-  </div>
+    $if(venue)$
+    <h2 class="venue">
+      $for(venue)$
+      <span class="hl-grass-green">$venue$</span>
+      $endfor$
+    </h2>
+    $endif$
 </section>

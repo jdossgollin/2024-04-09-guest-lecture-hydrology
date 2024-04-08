@@ -48,17 +48,17 @@ $link-color: $rice-gray;
         h2,
         h3 {
             color: $grass-green;
-            text-transform: uppercase;
             margin-bottom: 0.5em;
         }
 
         h2 {
-            font-size: 52px;
+            font-size: 60px;
         }
 
         h3 {
-            font-size: 44px;
+            font-size: 60px;
         }
+
 
         h4,
         h5,
@@ -175,6 +175,34 @@ $link-color: $rice-gray;
 
 }
 
+.text {
+
+    &-grass-green {
+        color: $grass-green;
+    }
+
+    &-brick-red {
+        color: $brick-red;
+    }
+
+    &-rice-blue {
+        color: $rice-blue;
+    }
+
+    &-warm-yellow {
+        color: $warm-yellow;
+    }
+
+    &-light-gray {
+        color: $light-gray;
+    }
+
+    &-rice-blue {
+        color: $rice-blue;
+    }
+
+}
+
 .reveal .footer {
     color: $rice-gray;
 }
@@ -198,7 +226,7 @@ $link-color: $rice-gray;
 .reveal {
     .title {
         color: $light-gray;
-        font-size: 60px;
+        font-size: 78px;
         text-align: left;
         font-weight: bold;
         font-family: serif;
@@ -213,16 +241,35 @@ $link-color: $rice-gray;
 
     .author,
     .date,
-    .institute {
+    .institute,
+    .venue {
         color: $light-gray;
         text-align: left;
-        font-size: 30px;
+        font-size: 40px;
         font-family: sans-serif;
 
         span {
             display: inline-block;
             padding: 0.25em 0.5em;
         }
+    }
+
+    .venue,
+    .institute {
+        margin-top: 0em;
+
+        span {
+            padding: 0em 0.5em;
+        }
+    }
+
+    .author,
+    .date {
+        margin-bottom: 0em;
+    }
+
+    .author {
+        margin-top: 3em;
     }
 }
 
