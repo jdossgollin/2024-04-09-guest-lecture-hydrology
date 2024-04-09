@@ -61,20 +61,7 @@ filters:
 auto-agenda:
   bullets: numbered
   heading: Today
-
-kernel: julia-1.10
-execute: 
-  cache: true
-  freeze: true
 ---
-
-```{julia}
-#| output: false
-#| echo: false
-using DataFrames
-using Extremes
-using Gadfly
-```
 
 ## How do we manage flood risk?
 
@@ -84,11 +71,11 @@ Please raise your hand and share a strategy you're familiar with.
 :::
 
 ::: {.fragment}
-1. Reduce emissions to mitigate future climate change
-2. Real-time monitoring and forecasting
-3. Building codes and design standards
-4. Insurance
-5. Nature-based solutions (e.g., wetlands, green infrastructure)
+1. Reduce emissions to prevent future climate change ("mitigation")
+1. Real-time monitoring and forecasting
+1. Building codes and design standards
+1. Insurance
+1. Nature-based solutions (e.g., wetlands, green infrastructure)
 :::
 
 # Flood risk assessment
@@ -127,16 +114,16 @@ Let's break down the steps to answer this question.
 
 ::: {.incremental}
 1. Select an appropriate reliability level, e.g. $T=10$ years
-2. From observations, estimate $T$ year _return level_ for rainfall intensity at a relevant duration, $i^*$
-3. Calculate peak flow, (e.g.: $Q^* = C i^* A$ where $i^*$ is peak rainfall intensity, $A$ is area, and $C$ is runoff coefficient)
-4. Size your culvert to handle $Q^* = Ci^*A$
+1. From observations, estimate $T$ year _return level_ for rainfall intensity at a relevant duration, $i^*$
+1. Calculate peak flow, (e.g.: $Q^* = C i^* A$ where $i^*$ is peak rainfall intensity, $A$ is area, and $C$ is runoff coefficient)
+1. Size your culvert to handle $Q^* = Ci^*A$
 :::
 
 ::: {.callout-tip .fragment}
 ## Thinking critically
 
-1. What are the main sources of uncertainty in this workflow?
-2. How might climate change affect the reliability of this approach?
+- What is the main source of uncertainty in this workflow?
+- How might climate change affect the reliability of this approach?
 :::
 
 ## How high to elevate a house to proactively reduce flood damages?
@@ -151,10 +138,10 @@ Elevating homes can reduce flood damage, but how do we determine the optimal ele
 
 ::: {.incremental}
 1. Develop depth-damage curve
-2. Estimate flood frequency at the site
-3. Calculate discounted net present value of damages over time
-4. Repeat for different elevation heights
-5. Select the elevation height that minimizes total costs (elevation + expected damages)
+1. Estimate flood frequency at the site
+1. Calculate discounted net present value of damages over time
+1. Repeat for different elevation heights
+1. Select the elevation height that minimizes total costs (elevation + expected damages)
 :::
 
 ## Is there enough electricity supply to meet winter peaks?
@@ -179,10 +166,10 @@ Extreme winter weather can strain electricity grids. How can we assess the risk 
 
 ::: {.incremental}
 1. We need the **joint** distribution of demand and supply
-2. Estimate winter peak demand
+1. Estimate winter peak demand
     1. Generate many sequences of hourly weather
-    2. For each, estimate hourly demand
-3. For each sequence, estimate supply...
+    1. For each, estimate hourly demand
+1. For each sequence, estimate supply...
 :::
 
 ## Physical risk disclosure
@@ -204,217 +191,224 @@ Sponge cities use nature-based solutions to manage flood risk. What data and mod
 ## Key insights
 
 ::: {.incremental}
-1. Flood modeling is one component of comprehensive flood risk assessment and management
-2. Accurate flood models need to be run multiple times to explore uncertainties
-3. Understanding drivers of flood hazard and risk, and how they may evolve, is crucial
-4. Flood risk assessment informs a wide range of decisions, from infrastructure design to financial disclosure
+1. Flood modeling is just one part of flood risk assessment and management
+1. Need not only accurate flood models, but also to run them many times to explore uncertainties
+1. Need to understand drivers of flood hazard and risk, and how they may change over time
+1. Flood risk assessment can inform a wide range of decisions, from infrastructure design to financial disclosure
 :::
 
 # Data science in flood risk assessment
 
+## Data science applications span boundary conditions and flood modeling
+
+::: {.columns}
+::: {.column width="50%"}
+- Boundary conditions
+   - Extreme value analysis
+   - Multivariate analysis
+   - Stochastic weather generators
+   - Downscaling
+:::
+::: {.column width="50%"}
+- Flood modeling
+   - Surrogate models
+   - Remote sensing
+:::
+:::
+::: {.fragment}
+And much more!
+:::
+
 ## How can we estimate the probability of rare, extreme events?
 
 ::: {.columns}
-::: {.column width="55%"}
-1. Estimating the probability of extreme events is challenging due to limited observations
-2. Simple and clever methods exist for estimating rare event likelihoods, but extrapolation is fundamentally difficult
+::: {.column width="60%"}
+- Floods are often caused by extreme rainfall or storm surge
+- But the most extreme events are rare, so how can we estimate their probability?
+- Extreme value analysis provides a framework for this problem
 :::
-::: {.column width="45%"}
+::: {.column width="40%"}
 ![Storm tide return levels for Galveston, TX](http://www.u-surge.net/uploads/6/4/8/8/64884233/published/screen-shot-2018-04-04-at-5-33-05-pm_1.png)
 :::
 :::
 
-## Extreme value statistics
+## Extreme value analysis: Methods for estimating the probability of rare events
+
+::: {.columns}
+::: {.column width="40%"}
+![Image: Equations for the GEV and GPD distributions, and a diagram illustrating the block maxima and peaks-over-threshold approaches]
+:::
+::: {.column width="60%"}
+- Extreme value distributions (GEV, GPD) are used to model the distribution of extreme events, given observed maxima
+- These distributions allow for extrapolation beyond the observed data
+:::
+:::
 
 ::: {.callout-tip .fragment}
 ## Thinking critically
-Given the physical processes driving floods, does it make sense to extrapolate extreme event probabilities beyond observed records?
+Given what you know about the physical processes that cause floods, does it make sense to extrapolate the probability of extreme events beyond what we've observed?
 :::
 
-```{julia}
-#| code-fold: true
-data = Extremes.dataset("portpirie")
-fm = gevfit(data, :SeaLevel)
-
-p1 = plot(data, x=:Year, y=:SeaLevel, Geom.point, Geom.line, Guide.title("Port Pirie sea level"))
-p2 = returnlevelplotci(fm, 0.05)
-draw(SVG(10inch, 4inch), hstack(p1, p2))
-```
-
-
-## Joint probability distributions
+## Why do we need multivariate analysis for flood risk assessment?
 
 ::: {.columns}
-::: {.column width="50%"}
-![{{< fa camera >}}: [Texas Water Newsroom](https://texaswaternewsroom.org/articles/a_coastal_flood_modeler_explains_compound_flooding.html)](_assets/img/compound_flooding.jpg)
+::: {.column width="60%"}
+- Some types of flooding, like coastal flooding, depend on multiple variables (e.g., rainfall and storm surge)
+- To accurately assess the risk, we need to understand the joint behavior of these variables
+- Multivariate analysis allows us to model the dependence between variables
 :::
-::: {.column width="50%"}
-1. Accurately assessing hazard requires understanding the **joint** distribution of boundary conditions
-2. Examples: antecedent moisture and rainfall; rainfall at multiple locations
+::: {.column width="40%"}
+![Image: Scatterplot showing the relationship between two variables, with a copula density overlay]
 :::
 :::
 
 ## Copulas: A tool for modeling dependence in multivariate analysis
 
 ::: {.columns}
-::: {.column width="50%"}
-![Correlations across many sites drives portfolio risk [@bonnafous_waterrisk:2017]](_assets/img/papers/bonnafous_waterrisk_2017_fig4.png)
+::: {.column width="40%"}
+![Image: Examples of different copula families (Gaussian, Clayton, Gumbel) and their density contours]
 :::
-::: {.column width="50%" .fragment}
-![Two-variable copula [@sebastian_network:2017]](_assets/img/papers/sebastian_network_2017_fig8.jpg)
+::: {.column width="60%"}
+- Copula models can capture the dependence structure between variables
+- They separate the marginal distributions from the dependence structure
+- This allows for modeling complex relationships and simulating joint behavior
 :::
 :::
 
-## Generating realistic weather sequences
+## Generating realistic weather sequences: Why do we need more than just historical data?
 
-1. Applications like water resources analysis and resource adequacy require long sequences of weather data
-2. Historical data is limited and may not capture the full range of possible conditions
-3. Single-variate extreme value analysis is insufficient, especially when storage is involved
+- For applications like water resources analysis and resource adequacy, we need long sequences of weather data
+- Historical data is limited and may not capture the full range of possible conditions
+- Single-variate extreme value analysis is insufficient, especially when storage is involved
 
-::: {.callout-tip .fragment}
+::: {.callout-tip}
 ## Thinking critically
-What are some limitations of relying solely on historical weather data or climate model simulations for long-term planning and risk assessment?
+What are some limitations of relying solely on historical weather data for long-term planning and risk assessment?
 :::
 
-## Downscaling
-
-![Yuhao Liu et al., *in prep.*](_assets/img/papers/liu-downscaling.png)
-
-## Stochastic weather generators
+## Stochastic weather generators and downscaling: Generating synthetic weather data
 
 ::: {.columns}
 ::: {.column width="50%"}
-1. Resampling and shuffling historical data
-2. Can be informed by credibly simulated climate variables
+Stochastic weather generators
+- Pros: Uses real data, computationally cheap, can generate long sequences, understandable
+- Cons: Limited by observed range, can overfit, may not capture climate change
 :::
 ::: {.column width="50%"}
-![@steinschneider_semiparametric:2013](_assets/img/papers/steinschneider_semiparametric_2013_fig1.png)
+Downscaling
+- Pros: High-resolution, leverages climate model simulations, can generate physically plausible synthetic weather
+- Cons: Computationally expensive, requires understanding of climate models, climate model biases can be difficult to correct
 :::
 :::
 
-## Trading accuracy for speed
-
-1. Many applications, such as project screening or optimization, require running flood models hundreds or thousands of times
-2. But complex flood models can be computationally expensive, making this infeasible
-3. There is a fundamental trade-off between model complexity and computational cost
-
-
-## Surrogate modeling
+## Running flood models multiple times: The need for surrogate models
 
 ::: {.columns}
 ::: {.column width="60%"}
-![@kazadi_neurips:2022](_assets/img/papers/kazadi_neurips_2022_fig3.png)
+- Many applications, such as project screening or optimization, require running flood models hundreds or thousands of times
+- But complex flood models can be computationally expensive, making this infeasible
+- Surrogate models (also called emulators) can provide a fast approximation of the complex model
 :::
 ::: {.column width="40%"}
-1. Surrogate models are trained on input-output data from the complex model
-2. Once trained, they provide near-instant predictions, enabling optimization and sensitivity analysis
+![Image: Diagram showing the process of building a surrogate model from input-output data of a complex model]
 :::
 :::
 
-## Remote sensing
+## Surrogate modeling: Approximating complex models for efficient computation
 
-::: {.columns}
-::: {.column width="50%"}
-1. Flooding can occur over large areas, making ground-based monitoring difficult
-2. Satellite imagery enables remote mapping of flood extent and depth
-3. Challenges include cloud cover and shadows
-:::
-::: {.column width="50%"}
-![NASA's Earth-observing satellites](https://appliedsciences.nasa.gov//sites/default/files/CURRENT-Earth-Missions10_2019_0.png)
-:::
-:::
+- Surrogate models are fast, approximate models that can be used in place of complex, computationally expensive models
+- They are trained on input-output data from the complex model
+- Once trained, they can provide near-instant predictions, enabling applications like optimization and sensitivity analysis
 
-## Image classification
+![Image: Example of a surrogate model architecture, such as from @kazadi_neurips:2022]
+
+## Remote sensing: A tool for flood mapping and monitoring
 
 ::: {.columns}
 ::: {.column width="60%"}
-![@tellman_database:2021](_assets/img/papers/tellman_database_2021_fig3.jpeg)
+- Flooding can occur over large areas, making it difficult to monitor on the ground
+- Satellite imagery provides a way to map flood extent and depth remotely
+- But there are challenges, like cloud cover and shadows, that need to be addressed
 :::
 ::: {.column width="40%"}
-1. Equations derived from physical processes
-2. Supervised classification algorithms (random forest, CNN)
-3. And more!
+![Image: Satellite image showing flood extent, with cloud cover and shadows obscuring parts of the image]
+:::
+:::
+
+## Methods for flood mapping and monitoring using remote sensing
+
+::: {.columns}
+::: {.column width="40%"}
+![Image: Diagram of a CNN architecture for flood extent mapping from satellite imagery]
+:::
+::: {.column width="60%"}
+- Convolutional Neural Networks (CNNs) can be used to classify satellite imagery into flooded and non-flooded areas
+- Other methods include supervised classification algorithms (SVM, random forest), unsupervised clustering (k-means, ISODATA), and data fusion techniques
 :::
 :::
 
 ## Key insights
 
 ::: {.incremental}
-1. Flood modeling is one part of comprehensive flood risk assessment and management
-2. Accurate flood models need to be run multiple times to capture uncertainty
-3. Understanding drivers of flood hazard and risk, and how they may change, is crucial
-4. Flood risk assessment informs diverse decisions, from infrastructure design to financial disclosure 
-5. Data science plays a vital role in flood risk assessment, from boundary condition modeling to surrogate modeling and remote sensing
+1. Flood modeling is just one part of flood risk assessment and management
+1. Need not only accurate flood models, but also to run them many times to capture uncertainty
+1. Need to understand drivers of flood hazard and risk, and how they may change over time
+1. Flood risk assessment can inform a wide range of decisions, from infrastructure design to financial disclosure
+1. Data science plays a crucial role in flood risk assessment, from modeling boundary conditions to surrogate modeling and remote sensing
 :::
 
 # Getting philosophical
 
 ## Flood risk assessment faces large and often irreducible uncertainties
 
-::: {.columns}
-::: {.column width="50%"}
-1. Many sources of uncertainty: future emissions, climate models, hydrologic models, exposure and vulnerability
-2. Some uncertainties are inherently irreducible, such as future human behavior and decision-making
-3. Uncertainty needs to be communicated and managed in flood risk assessment and decision-making
-:::
-::: {.column width="50%"}
-![Choices of climate forcing and physical model drives large differences in sea-level rise [@doss-gollin_subjective:2022]](_assets/img/2022-elevation-robustness/lsl-evolution.jpg)
-:::
-:::
+- Many sources of uncertainty: future emissions, climate models, hydrologic models, exposure and vulnerability
+- Some uncertainties are inherently irreducible, such as future human behavior and decision-making
+- Need to communicate and manage uncertainty in flood risk assessment and decision-making
 
 ## Subjective choices in representing uncertainties affect outcomes
 
-1. Subjective choices, such as selecting probability distributions or defining scenarios, can significantly impact results
-2. Predictions are difficult or impossible to verify [@oreskes_verification:1994]
-3. Transparency about these choices and exploring sensitivity to different assumptions is important
+- Different methods for representing uncertainty (e.g., probability distributions, scenarios) can lead to different results
+- Subjective choices, such as the selection of probability distributions or the definition of scenarios, can have a significant impact
+- Important to be transparent about these choices and to explore the sensitivity of results to different assumptions
 
-## Open science is critical
+## Open science is critical due to lack of consensus approaches
 
-::: {.columns}
-::: {.column width="50%"}
-![](https://upload.wikimedia.org/wikipedia/commons/d/d8/UNESCO-Open_science-pillars-en.png)
-:::
-::: {.column width="50%"}
-1. There is no single "best" approach for flood risk assessment and uncertainty quantification
-2. Open science enables reproducibility, transparency, and collaboration
-3. It allows for comparing and integrating different approaches, leading to more robust and credible results
-:::
-:::
+- No single "best" approach for flood risk assessment and uncertainty quantification
+- Open science enables reproducibility, transparency, and collaboration
+- Allows for the comparison and integration of different approaches, leading to more robust and credible results
 
 ## Tools and resources for open workflows
 
-1. Version control systems for code: git, GitHub
-2. Literate programming and reproducible analysis: Jupyter, Quarto
-3. Reproducible computational environments: conda, Docker, environments
-4. Open data platforms: Zenodo
-5. Learning tools: Software Carpentry, Fondren, classes
+- Version control systems (e.g., Git, GitHub) for code and data management
+- Jupyter / Quarto Notebooks for literate programming and reproducible analysis
+- Containerization tools (e.g., Docker) for reproducible computational environments
+- Open data platforms (e.g., Zenodo, Hydroshare) for data sharing and archiving
+- Resources like Software Carpentry for learning best practices in scientific computing
 
 # Conclusion
 
-## Recap
+## Recap: Flood risk assessment, data science, and the importance of open science
+
+1. Flood risk assessment requires modeling exposure, vulnerability, and boundary conditions, and hydrodynamics
+1. Probabilistic methods like extreme value analysis and multivariate analysis are essential for estimating rare events and modeling dependence
+- Uncertainty is inherent in flood risk assessment, and subjective choices in representing uncertainty can affect outcomes
+- Open science is critical for transparency, reproducibility, and collaboration in flood risk assessment
+
+## Encouragement: Develop statistical/ML and programming skills for effective flood risk management
 
 ::: {.incremental}
-1. Flood risk assessment requires modeling exposure, vulnerability, boundary conditions, and hydrodynamics
-2. Probabilistic methods like extreme value analysis and multivariate analysis are essential for estimating rare events and modeling dependence
-3. Uncertainty is inherent in flood risk assessment, and subjective choices in representing uncertainty can affect outcomes
-4. Open science is critical for transparency, reproducibility, and collaboration in flood risk assessment
-:::
-
-## Encouragement
-
-::: {.incremental}
-1. Skills in statistics, machine learning, and programming are increasingly important for flood risk assessment and management
-2. These skills enable the application of advanced data science methods and the implementation of open and reproducible workflows
-3. Seek out courses, workshops, and resources to develop these skills!
-4. Domain expertise is essential for effectively applying these skills
+- Skills in statistics, machine learning, and programming are increasingly important for flood risk assessment and management
+- These skills enable the application of advanced data science methods and the implementation of open and reproducible workflows
+- Seek out courses, workshops, and resources to develop these skills!
+- Without domain expertise, these skills are less useful!
 :::
 
 ## Learn more
 
 1. Visit [dossgollin-lab.github.io](https://dossgollin-lab.github.io)
-2. Take CEVE 421 / 521
-3. Take CEVE 443 / 543
-4. [jdossgollin@rice.edu](mailto:jdossgollin@rice.edu)
+1. Take CEVE 421 / 521
+1. Take CEVE 443 / 543
+1. [jdossgollin@rice.edu](mailto:jdossgollin@rice.edu)
 
 ## References
 
