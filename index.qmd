@@ -76,6 +76,19 @@ using Extremes
 using Gadfly
 ```
 
+## Follow along!
+
+::: {.columns}
+::: {.column width="45%"}
+![](_assets/img/qr.png)
+:::
+::: {.column width="55%"}
+- Code: [github.com/jdossgollin/2024-04-09-guest-lecture-hydrology/](https://github.com/jdossgollin/2024-04-09-guest-lecture-hydrology/)
+- Slides: [jdossgollin.github.io/2024-04-09-guest-lecture-hydrology/](https://jdossgollin.github.io/2024-04-09-guest-lecture-hydrology/)
+- [Instructions](https://quarto.org/docs/presentations/revealjs/presenting.html#print-to-pdf) for printing to PDF
+:::
+:::
+
 ## How do we manage flood risk?
 
 ::: {.callout-tip}
